@@ -1,0 +1,10 @@
+*.xlsx
+*.xls
+*.csv
+*.tsv
+*.env
+.env*
+node_modules/
+.local-*/
+*credentials*
+*secret*
