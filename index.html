@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="发货流程交互演示：切换客户叫车与工厂安排运输，自动更新待办并检查收货地址。">
+  <meta name="referrer" content="no-referrer">
+  <title>发货助手 · 交互演示</title>
+  <style>
+    :root{color-scheme:light;--ink:#172b3a;--muted:#5e7080;--line:#dce5e9;--blue:#195bd5;--blue-pale:#eef4ff;--green:#19745d;--red:#b63735;--bg:#f4f7f9}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #95b8ff;outline-offset:3px}button{transition:background .15s,border-color .15s}button:disabled{cursor:default}svg{display:block;flex:none}
+    .topbar{background:#fff;border-bottom:1px solid var(--line)}.top-inner{max-width:1160px;margin:auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;gap:16px}.brand{display:flex;align-items:center;gap:12px;font-weight:750;font-size:20px}.brand-icon{width:38px;height:38px;border-radius:11px;background:var(--blue);color:#fff;display:grid;place-items:center}.edition{font-size:14px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
+    main{max-width:1160px;padding:36px 28px 24px;margin:auto}.intro{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--blue);margin:0 0 6px}h1{font-size:32px;line-height:1.3;letter-spacing:-.03em;margin:0 0 10px}p{margin:0}.sub{color:var(--muted)}.privacy{display:flex;align-items:center;gap:7px;color:var(--green);font-size:14px;white-space:nowrap;padding-bottom:4px}
+    .scenarios{background:#eaf0f5;padding:13px 16px;border:1px solid #dce5ed;border-radius:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}.scenario-label{font-size:14px;color:var(--muted);margin-right:3px}.scenario{padding:7px 13px;background:#fff;border:1px solid #d4dee5;border-radius:7px;color:var(--ink);font-size:14px}.scenario:hover,.ghost:hover{background:var(--blue-pale);border-color:#a5bfe9}.scenario.warn{color:#9d4b22}
+    .layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 5px 18px #20334b04;overflow:hidden}.card-head{padding:22px 24px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}h2{font-size:19px;margin:0;line-height:1.4}.caption{font-size:14px;color:var(--muted);margin-top:4px}.card-body{padding:22px 24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}.field{min-width:0}.wide{grid-column:1/-1}label,.field-label,legend{font-size:14px;font-weight:600}label.field-name{display:block;margin-bottom:7px}.required{color:var(--red);margin-left:3px}input[type=text],input[type=number],textarea{width:100%;border:1px solid #cdd8df;border-radius:8px;padding:10px 12px;color:var(--ink);background:#fff;min-height:46px}textarea{resize:vertical;min-height:82px}input::placeholder,textarea::placeholder{color:#82909c}input:hover,textarea:hover{border-color:#9fb3c1}input[aria-invalid=true],textarea[aria-invalid=true]{border-color:var(--red);background:#fff9f8}.help{font-size:13px;color:var(--muted);margin-top:5px}.error{font-size:13px;color:var(--red);margin-top:5px}.section-rule{border:0;border-top:1px solid var(--line);margin:25px 0 22px}
+    fieldset{padding:0;margin:0;border:0;min-width:0}legend{margin-bottom:10px;padding:0}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mode{border:1px solid #d4dee5;border-radius:10px;padding:14px 12px;cursor:pointer;display:flex;gap:9px;align-items:flex-start}.mode:has(input:checked){border-color:var(--blue);background:var(--blue-pale);box-shadow:0 0 0 1px var(--blue)}input[type=radio],input[type=checkbox]{accent-color:var(--blue);width:17px;height:17px;flex:none;margin:4px 0 0}.mode strong{display:block;font-size:15px}.mode small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:3px}.conditional{margin-top:20px}.check-row{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-weight:400;cursor:pointer}.check-row span{font-size:14px}.factory-note{font-size:13px;color:var(--muted);margin-top:12px}.form-actions{display:flex;gap:10px;margin-top:25px}.primary,.ghost{border-radius:8px;padding:11px 16px;font-weight:600;min-height:46px}.primary{background:var(--blue);border:1px solid var(--blue);color:#fff;flex:1}.primary:hover{background:#144db6}.ghost{background:#fff;border:1px solid #cad6df;color:#41576a}.status{font-size:13px;border-radius:6px;background:#edf3f6;color:#486276;padding:4px 9px;white-space:nowrap}.status.ready{background:#eaf7f0;color:var(--green)}.status.blocked{background:#fff0ed;color:var(--red)}
+    .route-card{border-left:3px solid var(--blue);padding:2px 0 2px 13px;margin-bottom:19px}.route-title{font-weight:700;font-size:16px}.route-note{font-size:14px;color:var(--muted);margin-top:5px}.alert{background:#fff3ee;border:1px solid #f2d2c3;border-radius:9px;padding:12px 13px;color:#a13d22;font-size:14px;margin-bottom:18px}.progress-top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:9px}.progress-label{color:var(--muted)}progress{width:100%;height:7px;border:none;border-radius:8px;overflow:hidden;background:#e8eef2;display:block}progress::-webkit-progress-bar{background:#e8eef2}progress::-webkit-progress-value{background:var(--green);border-radius:8px}progress::-moz-progress-bar{background:var(--green)}.tasks{list-style:none;padding:0;margin:16px 0 2px}.task{border-bottom:1px solid #edf1f4;padding:13px 0}.task:last-child{border-bottom:0}.task label{display:flex;gap:11px;cursor:pointer;font-weight:400}.task strong{font-size:15px;font-weight:600;display:block}.task small{font-size:13px;color:var(--muted);display:block;margin-top:3px}.task:has(input:checked) strong{color:var(--green);text-decoration:line-through}.note-panel{background:#f7f9fb;padding:14px 16px;border-radius:9px;font-size:13px;color:var(--muted);margin-top:17px}.note-panel strong{color:#415a6e;font-weight:600}.summary-card{margin-top:22px}.summary-card pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.8 inherit;color:#334d60;margin:0;background:#f7f9fb;border:1px solid var(--line);border-radius:9px;padding:16px}.summary-card h2{margin-bottom:13px}.summary-sub{font-size:13px;color:var(--muted);margin-bottom:12px}.rules{margin-top:22px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:14px 18px}.rules summary{font-size:14px;font-weight:600;cursor:pointer}.rules p{font-size:14px;color:var(--muted);margin-top:10px}.footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin:24px 0 8px}.live-message{min-height:22px;font-size:13px;color:var(--green);margin-top:10px}[hidden]{display:none!important}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.intro{align-items:start;flex-direction:column;gap:12px}.privacy{padding:0}main{padding-top:26px}.intro h1{font-size:28px}}
+    @media(max-width:480px){main{padding:22px 16px}.top-inner{padding:14px 16px;min-height:68px}.edition{font-size:12px}.card-head,.card-body{padding:18px}.form-grid{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr}.scenarios{gap:8px;padding:12px}.scenario-label{width:100%}.form-actions{flex-wrap:wrap}.primary{min-width:160px}.footer{margin-bottom:18px}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="top-inner"><div class="brand"><span class="brand-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"/></svg></span>发货助手</div><span class="edition">交互演示 / DEMO</span></div></header>
+  <main>
+    <div class="intro"><div><p class="eyebrow">SHIPPING WORKFLOW</p><h1>选好运输方式，理清发货待办。</h1><p class="sub">录入订单，切换运输方式，检查交接前需要确认的事项。</p></div><p class="privacy"><svg width="17" height="19" viewBox="0 0 20 22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m10 2 7 3v6c0 5-7 9-7 9s-7-4-7-9V5l7-3Z"/><path d="m6.5 10 2.5 2.5 4.5-4.5"/></svg>虚拟订单 · 无需登录</p></div>
+    <nav class="scenarios" aria-label="加载演示场景"><span class="scenario-label">一键体验</span><button class="scenario" type="button" id="sample-customer">客户叫车示例</button><button class="scenario" type="button" id="sample-factory">工厂运输示例</button><button class="scenario warn" type="button" id="sample-missing">试试缺少地址</button></nav>
+    <div class="layout">
+      <section class="card" aria-labelledby="form-title">
+        <div class="card-head"><div><h2 id="form-title">订单信息</h2><p class="caption">已填入虚拟订单，可直接修改体验</p></div><span class="status">演示订单</span></div>
+        <div class="card-body">
+          <form id="shipping-form" novalidate autocomplete="off">
+            <div class="form-grid">
+              <div class="field"><label class="field-name" for="order-id">订单编号<span class="required" aria-hidden="true">*</span></label><input id="order-id" name="orderId" type="text" value="DEMO-2026-001" maxlength="60" required aria-describedby="order-id-error"><p class="error" id="order-id-error" hidden>请填写订单编号。</p></div>
+              <div class="field"><label class="field-name" for="customer">客户名称<span class="required" aria-hidden="true">*</span></label><input id="customer" name="customer" type="text" value="示例客户 A（虚拟）" maxlength="80" required aria-describedby="customer-error"><p class="error" id="customer-error" hidden>请填写客户名称。</p></div>
+              <div class="field"><label class="field-name" for="product">产品名称<span class="required" aria-hidden="true">*</span></label><input id="product" name="product" type="text" value="水流指示器（演示型号）" maxlength="100" required aria-describedby="product-error"><p class="error" id="product-error" hidden>请填写产品名称。</p></div>
+              <div class="field"><label class="field-name" for="quantity">发货数量（件）<span class="required" aria-hidden="true">*</span></label><input id="quantity" name="quantity" type="number" value="120" min="1" max="999999" step="1" required aria-describedby="quantity-error"><p class="error" id="quantity-error" hidden>请输入 1 至 999999 的整数数量。</p></div>
+            </div>
+            <hr class="section-rule">
+            <fieldset><legend>运输方式</legend><div class="mode-grid">
+              <label class="mode"><input id="mode-customer" type="radio" name="mode" value="customer" checked><span><strong>客户叫车</strong><small>客户安排车辆到厂提货</small></span></label>
+              <label class="mode"><input id="mode-factory" type="radio" name="mode" value="factory"><span><strong>工厂安排运输</strong><small>工厂联系承运方配送</small></span></label>
+            </div></fieldset>
+            <div id="factory-fields" class="conditional" hidden>
+              <label class="field-name" for="address">收货地址<span class="required" aria-hidden="true">*</span></label><textarea id="address" name="address" rows="2" maxlength="300" placeholder="例如：示例市示例区演示路 18 号（虚拟地址）" aria-describedby="address-help address-error"></textarea>
+              <p class="help" id="address-help">工厂安排运输时必填。请仅使用虚拟地址。</p><p class="error" id="address-error" hidden>工厂安排运输前，请补充收货地址。</p>
+              <label class="check-row"><input id="warehouse" type="checkbox" name="warehouse"><span>需要入库交接<small class="help" style="display:block">勾选后，待办会增加入库要求确认。</small></span></label>
+              <p class="factory-note">运费与结算方式需在联系承运方时确认。</p>
+            </div>
+            <div id="customer-fields" class="conditional"><div class="note-panel" style="margin-top:0"><strong>客户负责叫车，工厂负责装车交接。</strong><br>请与客户确认提货时间和到厂车辆，并按需要反馈装车照片。</div></div>
+            <div class="form-actions"><button class="primary" type="submit">检查并生成交接摘要</button><button class="ghost" type="button" id="reset-example">重置示例</button></div>
+            <p id="form-message" class="live-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+      <aside class="card" aria-labelledby="todo-title"><div class="card-head"><div><h2 id="todo-title">当前发货待办</h2><p class="caption">随运输方式实时更新</p></div><span id="check-status" class="status">待核对</span></div><div class="card-body">
+        <div class="route-card"><p id="route-title" class="route-title"></p><p id="route-note" class="route-note"></p></div>
+        <div id="address-alert" class="alert" role="status" aria-live="polite" hidden>缺少收货地址：请补充后再生成交接摘要。</div>
+        <div class="progress-top"><span class="progress-label">待办核对进度</span><span id="progress-text" aria-live="polite">0 / 4</span></div><progress id="progress" value="0" max="4" aria-label="待办核对进度"></progress>
+        <ul id="tasks" class="tasks"></ul>
+        <div class="note-panel"><strong>演示说明</strong><br>勾选代表手动核对。修改订单或运输方式后，核对进度会重置。生成摘要不会实际下单或通知承运方。</div>
+      </div></aside>
+    </div>
+    <section id="summary-section" class="card summary-card" aria-labelledby="summary-title" hidden><div class="card-body"><h2 id="summary-title" tabindex="-1">交接摘要</h2><p id="summary-sub" class="summary-sub"></p><pre id="summary"></pre></div></section>
+    <details class="rules"><summary>查看两种运输方式的演示规则</summary><p><strong>客户叫车：</strong>确认到厂车辆与提货时间，安排装车摆放，按需拍照并反馈发货信息。</p><p><strong>工厂安排运输：</strong>必须填写收货地址；联系承运方，确认运费与结算方式，安排装车并反馈发货信息。选择入库交接时，额外确认入库要求。</p><p>本页展示简化的发货流程，不包含支付、开票或真实运输服务。</p></details>
+    <footer class="footer"><span>发货流程交互演示 · Portfolio project</span><span>数据仅在当前页面内使用，刷新后恢复虚拟示例。请勿填写真实客户资料。</span></footer>
+    <noscript><p class="alert">请启用 JavaScript，以体验运输方式切换和发货信息检查。</p></noscript>
+  </main>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const form = $('shipping-form');
+    const done = new Set();
+    let submitted = false;
+    function order() {
+      return {id:$('order-id').value.trim(),customer:$('customer').value.trim(),product:$('product').value.trim(),quantity:$('quantity').value,mode:form.elements.mode.value,address:$('address').value.trim(),warehouse:$('warehouse').checked};
+    }
+    function problems(data) {
+      const invalid = [];
+      if (!data.id) invalid.push('order-id');
+      if (!data.customer) invalid.push('customer');
+      if (!data.product) invalid.push('product');
+      if (!data.quantity || !Number.isInteger(Number(data.quantity)) || Number(data.quantity)<1 || Number(data.quantity)>999999 || $('quantity').validity.badInput) invalid.push('quantity');
+      if (data.mode === 'factory' && !data.address) invalid.push('address');
+      return invalid;
+    }
+    function taskList(data) {
+      const common = [{id:'goods',title:'核对待发货物',note:'确认订单、发货数量和包装情况。'}];
+      if (data.mode === 'customer') return common.concat([
+        {id:'vehicle',title:'确认客户车辆与提货时间',note:'与客户确认到厂安排，做好装车衔接。'},
+        {id:'load',title:'安排装车与摆放',note:'按约定将货物装上客户车辆。'},
+        {id:'feedback',title:'反馈发货信息',note:'按需要拍照，将装车照片和发货信息反馈客户。'}
+      ]);
+      const tasks = common.concat([
+        {id:'address',title:'确认收货地址',note:data.address || '待补充地址，暂不能生成交接摘要。'},
+        {id:'carrier',title:'联系承运方，确认运费',note:'确认运输安排、运费与结算方式。'}
+      ]);
+      if (data.warehouse) tasks.push({id:'warehouse',title:'确认入库要求',note:'与客户及承运方确认入库安排和交接要求。'});
+      return tasks.concat([{id:'load',title:'安排装车与摆放',note:'按约定安排提货，核对装车货物。'},{id:'feedback',title:'反馈发货信息',note:'将发货照片与运输信息反馈客户。'}]);
+    }
+    function updateProgress() {
+      const total = $('tasks').children.length;
+      $('progress').max = total; $('progress').value = done.size;
+      $('progress-text').textContent = `${done.size} / ${total}`;
+    }
+    function render() {
+      const data = order(); const factory = data.mode === 'factory'; const invalid = problems(data);
+      $('factory-fields').hidden = !factory; $('customer-fields').hidden = factory; $('address').required = factory; $('address').disabled = !factory; $('warehouse').disabled = !factory;
+      $('route-title').textContent = factory ? '工厂联系承运方配送' : '客户车辆到厂提货';
+      $('route-note').textContent = factory ? '收货信息、运费与装车安排由工厂协调。' : '客户安排车辆，工厂做好装车交接。';
+      $('address-alert').hidden = !factory || !!data.address;
+      for (const id of ['order-id','customer','product','quantity','address']) {
+        const show = invalid.includes(id) && (submitted || id === 'address');
+        $(id).setAttribute('aria-invalid', String(show)); $(id+'-error').hidden = !show;
+      }
+      const status = $('check-status');
+      status.textContent = invalid.length ? `缺少或无效信息 ${invalid.length} 项` : '信息已齐备';
+      status.className = 'status '+(invalid.length ? 'blocked' : 'ready');
+      $('tasks').replaceChildren();
+      for (const task of taskList(data)) {
+        const li = document.createElement('li');li.className='task';
+        const label = document.createElement('label');const input=document.createElement('input');input.type='checkbox';input.checked=done.has(task.id);
+        input.disabled=task.id==='address' && !data.address;
+        const span=document.createElement('span');const title=document.createElement('strong');title.textContent=task.title;const note=document.createElement('small');note.textContent=task.note;
+        input.addEventListener('change',()=>{input.checked?done.add(task.id):done.delete(task.id);updateProgress();if(!$('summary-section').hidden){$('summary-section').hidden=true;$('form-message').textContent='核对进度已更新，请重新生成交接摘要。';}});
+        span.append(title,note);label.append(input,span);li.append(label);$('tasks').append(li);
+      }
+      updateProgress();
+    }
+    function edited() {done.clear();$('summary-section').hidden=true;$('form-message').textContent='';render();}
+    form.addEventListener('input',edited);
+    form.addEventListener('change',event=>{if(event.target.type==='radio' || event.target.type==='checkbox')edited();});
+    form.addEventListener('submit',event=>{
+      event.preventDefault();submitted=true;render();const data=order();const invalid=problems(data);
+      if(invalid.length){$('summary-section').hidden=true;$('form-message').textContent=`还有 ${invalid.length} 项信息需要补充或修正。`;$(invalid[0]).focus();return;}
+      const tasks=taskList(data);const lines=[`订单编号：${data.id}`,`客户名称：${data.customer}`,`产品名称：${data.product}`,`发货数量：${Number(data.quantity)} 件`,`运输方式：${data.mode==='factory'?'工厂安排运输':'客户叫车'}`];
+      if(data.mode==='factory') lines.push(`收货地址：${data.address}`,`入库交接：${data.warehouse?'需要，须确认具体要求':'未选择入库交接'}`);
+      lines.push('',`待办核对（${done.size} / ${tasks.length}）：`,...tasks.map(task=>`${done.has(task.id)?'已核对':'待核对'} · ${task.title}`),'','仅供演示，未实际下单或发送通知。');
+      $('summary').textContent=lines.join('\n');$('summary-sub').textContent=done.size===tasks.length?'信息检查通过，演示待办已全部手动核对。':'信息检查通过。以下待办仍需按实际情况核对。';
+      $('summary-section').hidden=false;$('form-message').textContent='交接摘要已生成。';$('summary-title').focus();
+    });
+    function sample(mode,missing=false){
+      form.reset();$('mode-customer').checked=mode==='customer';$('mode-factory').checked=mode==='factory';$('address').value=mode==='factory' && !missing?'示例市示例区演示路 18 号（虚拟地址）':'';
+      $('warehouse').checked=mode==='factory' && !missing;submitted=false;done.clear();$('summary-section').hidden=true;render();
+      $('form-message').textContent=missing?'已加载缺地址场景。补充地址后，提示会自动消失。':`已加载${mode==='factory'?'工厂运输':'客户叫车'}虚拟示例。`;
+    }
+    $('sample-customer').addEventListener('click',()=>sample('customer'));
+    $('sample-factory').addEventListener('click',()=>sample('factory'));
+    $('sample-missing').addEventListener('click',()=>sample('factory',true));
+    $('reset-example').addEventListener('click',()=>sample('customer'));
+    render();
+  </script>
+</body>
+</html>
