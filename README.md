@@ -1,2 +1,43 @@
-# shipping-demo
-Interactive shipping workflow demo with customer pickup, factory transport and address validation. Fictional data only.
+# 发货流程交互演示
+
+一个可以直接通过 GitHub Pages 发布的单文件网页，供面试时演示业务规则与表单交互。
+
+## 体验内容
+
+- 切换「客户叫车」与「工厂安排运输」，自动更新发货待办。
+- 工厂安排运输时，收货地址必填；空白或全空格地址会显示提示并阻止生成摘要。
+- 选择入库交接后，增加对应待办。
+- 校验订单编号、客户名称、产品名称和正整数数量，生成交接摘要。
+- 使用三个虚拟场景快速体验；勾选待办后显示核对进度。
+
+所有示例均为虚拟数据。页面不调用后端、不发送表单、不使用外部脚本或统计工具、不保存浏览器记录。刷新后恢复虚拟示例。请勿录入真实客户资料。
+
+## 本地打开
+
+直接打开 `index.html` 即可使用，无需安装依赖。
+
+## 发布到 GitHub Pages
+
+1. 新建公开仓库 `shipping-demo`。
+2. 将本目录内的 `index.html` 放到仓库 `main` 分支的最外层。可同时上传本说明与 `.nojekyll`。
+3. 打开仓库 **Settings → Pages**。
+4. **Source** 选 **Deploy from a branch**，分支选 **main**，目录选 **/ (root)**，点击 **Save**。
+5. 等待 GitHub 显示发布成功，以 Pages 页面实际显示的网址为准。
+
+官方文档：https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+
+## 上线验收
+
+- 退出登录或打开无痕窗口，访问发布后的地址。
+- 点击「客户叫车示例」，确认显示车辆、装车、反馈等 4 项待办。
+- 点击「工厂运输示例」，确认显示地址、承运方和入库交接等 6 项待办。
+- 点击「试试缺少地址」，确认出现缺地址提示，生成摘要被阻止；输入虚拟地址后可正常生成。
+- 切回客户叫车，确认地址不再必填，入库待办消失。
+- 输入 0、负数或小数数量，确认无法生成摘要。
+- 在手机宽度下检查表单和待办可正常阅读。
+
+## 项目说明
+
+使用原生 HTML、CSS 和 JavaScript。业务规则在 `taskList()` 中集中定义，`problems()` 负责表单检查，用户输入通过 `textContent` 输出。修改订单时会重置待办核对进度，避免复用旧订单的核对结果。
+
+这是简化的交互 Demo，不接入真实运输、支付、开票或企业系统。不包含内部表格、人员姓名、客户信息、物流合作方或内部结算约定。
